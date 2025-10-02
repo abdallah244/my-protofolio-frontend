@@ -1,0 +1,139 @@
+<div class="register-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Loading Overlay -->
+  <div class="register-loading" *ngIf="isLoading">
+    <div class="register-spinner">
+      <i class="fas fa-user-astronaut"></i>
+    </div>
+    <div class="register-loading-text">Creating account...</div>
+    <div class="register-progress">
+      <div class="register-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="register-content" *ngIf="!isLoading">
+    
+    <!-- Background Elements -->
+    <div class="register-background">
+      <div class="register-particle register-particle-1"></div>
+      <div class="register-particle register-particle-2"></div>
+      <div class="register-particle register-particle-3"></div>
+    </div>
+
+    <!-- Register Card -->
+    <div class="register-card">
+      <div class="register-header">
+        <div class="register-logo">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <h1 class="register-title">Create account </h1>
+        <p class="register-subtitle">Join the protofolio network</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+        
+        <!-- Name Field -->
+        <div class="form-group">
+          <label class="form-label">name Identity</label>
+          <div class="input-group">
+            <i class="fas fa-id-card input-icon"></i>
+            <input 
+              formControlName="name"
+              type="text" 
+              class="form-input"
+              placeholder="Enter your name identity"
+            >
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+            <span *ngIf="registerForm.get('name')?.errors?.['required']">Identity required</span>
+            <span *ngIf="registerForm.get('name')?.errors?.['minlength']">Minimum 3 characters</span>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label">email Signature</label>
+          <div class="input-group">
+            <i class="fas fa-at input-icon"></i>
+            <input 
+              formControlName="email"
+              type="email" 
+              class="form-input"
+              placeholder="your@gmail.com"
+            >
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">Signature required</span>
+            <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email pattern</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label class="form-label">password</label>
+          <div class="input-group">
+            <i class="fas fa-key input-icon"></i>
+            <input 
+              formControlName="password"
+              type="password" 
+              class="form-input"
+              placeholder="Create password"
+            >
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+            <span *ngIf="registerForm.get('password')?.errors?.['required']">passwoed required</span>
+            <span *ngIf="registerForm.get('password')?.errors?.['minlength']">6+ characters needed</span>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label class="form-label">Confirm Key</label>
+          <div class="input-group">
+            <i class="fas fa-shield-alt input-icon"></i>
+            <input 
+              formControlName="confirmPassword"
+              type="password" 
+              class="form-input"
+              placeholder="Confirm encryption key"
+            >
+          </div>
+          <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+            <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirmation required</span>
+          </div>
+          <div class="error-message" *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+            passwoed don't match
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="error-container" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <div class="success-container" *ngIf="successMessage">
+          <i class="fas fa-check-circle"></i>
+          <span>{{ successMessage }}</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          [disabled]="registerForm.invalid"
+          class="register-btn"
+        >
+          <i class="fas fa-bolt"></i>
+          Launch account ID
+        </button>
+      </form>
+
+      <div class="register-footer">
+        <p>Already have account access? 
+          <a routerLink="/login" class="login-link">account Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

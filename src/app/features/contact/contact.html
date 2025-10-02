@@ -1,0 +1,165 @@
+<div
+  class="contact-container"
+  [class.dark]="currentTheme === 'dark'"
+  [class.light]="currentTheme === 'light'"
+>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo" routerLink="/home">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+
+      <div class="nav-actions">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/home" class="home-btn" href="../user/home/home.html">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="contact-content">
+    <!-- Header -->
+    <div class="contact-header">
+      <h1 class="contact-title">Get In Touch</h1>
+      <p class="contact-subtitle">Let's discuss your next project</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <h2 class="info-title">Contact Information</h2>
+        <p class="info-description">
+          Feel free to reach out for collaborations or just to say hello. I'm always open to
+          discussing new projects and opportunities.
+        </p>
+
+        <div class="info-items">
+          <div class="info-item" *ngFor="let item of contactInfo">
+            <div class="info-icon">
+              <i [class]="item.icon"></i>
+            </div>
+            <div class="info-content">
+              <h3>{{ item.label }}</h3>
+              <a [href]="item.link" target="_blank" rel="noopener noreferrer">{{ item.value }}</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-section">
+          <h3>Follow Me</h3>
+          <div class="social-links">
+            <a
+              *ngFor="let social of socialLinks"
+              class="social-link"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i [class]="social.icon"></i>
+              <span>{{ social.label }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-section">
+        <h2 class="form-title">Send Message</h2>
+
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              class="form-input"
+              placeholder="Enter your full name"
+              [class.error]="isFieldInvalid('name')"
+            />
+            <div class="error-message" *ngIf="isFieldInvalid('name')">
+              {{ getFieldError('name') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              class="form-input"
+              placeholder="Enter your email address"
+              [class.error]="isFieldInvalid('email')"
+            />
+            <div class="error-message" *ngIf="isFieldInvalid('email')">
+              {{ getFieldError('email') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <input
+              id="subject"
+              type="text"
+              formControlName="subject"
+              class="form-input"
+              placeholder="Enter the subject"
+              [class.error]="isFieldInvalid('subject')"
+            />
+            <div class="error-message" *ngIf="isFieldInvalid('subject')">
+              {{ getFieldError('subject') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea
+              id="message"
+              formControlName="message"
+              class="form-input"
+              placeholder="Enter your message..."
+              rows="5"
+              [class.error]="isFieldInvalid('message')"
+            ></textarea>
+            <div class="error-message" *ngIf="isFieldInvalid('message')">
+              {{ getFieldError('message') }}
+            </div>
+          </div>
+
+          <!-- Submit Message -->
+          <div
+            class="submit-message"
+            *ngIf="submitMessage"
+            [class.success]="submitType === 'success'"
+            [class.error]="submitType === 'error'"
+          >
+            <i
+              class="fas"
+              [class.fa-check-circle]="submitType === 'success'"
+              [class.fa-exclamation-circle]="submitType === 'error'"
+            ></i>
+            {{ submitMessage }}
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="contactForm.invalid || isSubmitting">
+            <span *ngIf="!isSubmitting">
+              <i class="fas fa-paper-plane"></i>
+              Send Message
+            </span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i>
+              Sending...
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

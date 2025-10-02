@@ -1,0 +1,449 @@
+<div class="about-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo" routerLink="/home" >
+       <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+
+      <div class="nav-actions">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/home" class="home-btn">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="about-content">
+    
+    <!-- Profile Hero Section -->
+    <section class="profile-hero">
+      <div class="profile-main">
+        <div class="profile-image-container">
+          <div class="profile-image">
+            <img [src]="personalInfo.image" alt="Abdallah Hany" />
+            <div class="image-overlay">
+              <i class="fas fa-camera"></i>
+            </div>
+          </div>
+          <div class="profile-badge">
+            <i class="fas fa-medal"></i>
+            <span>Professional Developer</span>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <h1 class="profile-name">{{ personalInfo.name }}</h1>
+          <h2 class="profile-title">{{ personalInfo.title }}</h2>
+          <p class="profile-bio">{{ personalInfo.bio }}</p>
+          
+          <div class="profile-contacts">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <span>{{ personalInfo.email }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <span>{{ personalInfo.phone }}</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ personalInfo.location }}</span>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="btn primary" (click)="navigateTo('/contact')">
+              <i class="fas fa-paper-plane"></i>
+              Contact Me
+            </button>
+            <button class="btn secondary" (click)="scrollToSection('skills')">
+              <i class="fas fa-chart-bar"></i>
+              View Skills
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section">
+        <div class="stat-card" *ngFor="let stat of stats">
+          <div class="stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ stat.number }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Bio Section -->
+    <section class="bio-section">
+      <div class="section-header">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-subtitle">My journey in web development</p>
+      </div>
+      
+      <div class="bio-content">
+        <div class="bio-text">
+          <p>{{ personalInfo.detailedBio }}</p>
+          
+          <div class="bio-highlights">
+            <div class="highlight">
+              <i class="fas fa-rocket"></i>
+              <span>Passionate about technology and innovation</span>
+            </div>
+            <div class="highlight">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Continuous learner and tech enthusiast</span>
+            </div>
+            <div class="highlight">
+              <i class="fas fa-handshake"></i>
+              <span>Strong believer in teamwork and collaboration</span>
+            </div>
+            <div class="highlight">
+              <i class="fas fa-bullseye"></i>
+              <span>Focused on quality and user experience</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bio-visual">
+          <div class="experience-card">
+            <div class="exp-years">
+              <span class="years">1</span>
+              <span class="label">Years of Experience</span>
+            </div>
+            <div class="exp-details">
+              <p>Successfully delivered 5+ projects using modern web technologies</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Progress Section -->
+    <section class="skills-progress-section" id="skills">
+      <div class="section-header">
+        <h2 class="section-title">Skills & Expertise</h2>
+        <p class="section-subtitle">My technical proficiency levels</p>
+      </div>
+
+      <div class="skills-progress-grid">
+        <!-- Programming Languages -->
+        <div class="skill-category">
+          <h3 class="skill-category-title">
+            <i class="fas fa-laptop-code"></i>
+            Programming Languages
+          </h3>
+          <div class="skill-bars">
+            <div class="skill-bar" *ngFor="let skill of getSkillLevels('programming')">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <div class="skill-info">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="skill.level"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frontend Technologies -->
+        <div class="skill-category">
+          <h3 class="skill-category-title">
+            <i class="fas fa-paint-brush"></i>
+            Frontend Technologies
+          </h3>
+          <div class="skill-bars">
+            <div class="skill-bar" *ngFor="let skill of getSkillLevels('frontend')">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <div class="skill-info">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="skill.level"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backend Technologies -->
+        <div class="skill-category">
+          <h3 class="skill-category-title">
+            <i class="fas fa-server"></i>
+            Backend Technologies
+          </h3>
+          <div class="skill-bars">
+            <div class="skill-bar" *ngFor="let skill of getSkillLevels('backend')">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <div class="skill-info">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="skill.level"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools & Platforms -->
+        <div class="skill-category">
+          <h3 class="skill-category-title">
+            <i class="fas fa-tools"></i>
+            Tools & Platforms
+          </h3>
+          <div class="skill-bars">
+            <div class="skill-bar" *ngFor="let skill of getSkillLevels('tools')">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <div class="skill-info">
+                  <span class="skill-name">{{ skill.name }}</span>
+                  <span class="skill-percentage">{{ skill.level }}%</span>
+                </div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="skill.level"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education & Certifications -->
+    <section class="education-section">
+      <div class="section-header">
+        <h2 class="section-title">Education & Certifications</h2>
+        <p class="section-subtitle">My academic background and professional certifications</p>
+      </div>
+
+      <div class="education-grid">
+        <!-- Education -->
+        <div class="education-column">
+          <h3 class="column-title">
+            <i class="fas fa-graduation-cap"></i>
+            Education
+          </h3>
+          <div class="education-list">
+            <div class="education-item" *ngFor="let edu of education">
+              <div class="edu-header">
+                <h4 class="edu-degree">{{ edu.degree }}</h4>
+                <span class="edu-period">{{ edu.period }}</span>
+              </div>
+              <p class="edu-institution">{{ edu.institution }}</p>
+              <p class="edu-description">{{ edu.description }}</p>
+              
+              <!-- Achievements -->
+              <div class="achievements-section" *ngIf="edu.achievements && edu.achievements.length > 0">
+                <h5 class="achievements-title">
+                  <i class="fas fa-trophy"></i>
+                  Key Achievements
+                </h5>
+                <ul class="achievements-list">
+                  <li class="achievement-item" *ngFor="let achievement of edu.achievements">
+                    <i class="fas fa-star"></i>
+                    {{ achievement }}
+                  </li>
+                </ul>
+              </div>
+
+              <!-- View Details Button -->
+              <button class="view-details-btn" (click)="openEduModal(edu)">
+                <i class="fas fa-eye"></i>
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="education-column">
+          <h3 class="column-title">
+            <i class="fas fa-certificate"></i>
+            Certifications
+          </h3>
+          <div class="certification-list">
+            <div class="certification-item" *ngFor="let cert of certifications">
+              <div class="cert-header">
+                <h4 class="cert-name">{{ cert.name }}</h4>
+                <span class="cert-date">{{ cert.date }}</span>
+              </div>
+              <p class="cert-issuer">{{ cert.issuer }}</p>
+              <p class="cert-id" *ngIf="cert.credentialId">ID: {{ cert.credentialId }}</p>
+              
+              <!-- Skills Gained -->
+              <div class="skills-gained" *ngIf="cert.skills && cert.skills.length > 0">
+                <h5 class="skills-title">
+                  <i class="fas fa-cogs"></i>
+                  Skills Gained
+                </h5>
+                <div class="skills-tags">
+                  <span class="skill-tag" *ngFor="let skill of cert.skills">
+                    {{ skill }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- View Details Button -->
+              <button class="view-details-btn" (click)="openCertModal(cert)">
+                <i class="fas fa-eye"></i>
+                View Certificate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section">
+      <div class="section-header">
+        <h2 class="section-title">Services</h2>
+        <p class="section-subtitle">What I can do for you</p>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let service of services">
+          <div class="service-icon">
+            <i [class]="service.icon"></i>
+          </div>
+          <h3 class="service-title">{{ service.title }}</h3>
+          <p class="service-description">{{ service.description }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="cta-content">
+        <h2>Ready to Start Your Next Project?</h2>
+        <p>Let's work together to bring your ideas to life with cutting-edge technology</p>
+        <div class="cta-actions">
+          <a routerLink="/contact" class="cta-btn primary">
+            <i class="fas fa-paper-plane"></i>
+            Get In Touch
+          </a>
+          <a routerLink="/projects" class="cta-btn secondary">
+            <i class="fas fa-eye"></i>
+            View My Work
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Certification Modal -->
+  <div class="modal-overlay" *ngIf="isCertModalOpen" (click)="closeCertModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ selectedCertification?.name }}</h3>
+        <button class="modal-close" (click)="closeCertModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="certificate-image">
+          <img [src]="selectedCertification?.image" [alt]="selectedCertification?.name" />
+        </div>
+        
+        <div class="certificate-details">
+          <div class="detail-item">
+            <strong>Issuer:</strong> {{ selectedCertification?.issuer }}
+          </div>
+          <div class="detail-item">
+            <strong>Date Earned:</strong> {{ selectedCertification?.date }}
+          </div>
+          <div class="detail-item" *ngIf="selectedCertification?.credentialId">
+            <strong>Credential ID:</strong> {{ selectedCertification?.credentialId }}
+          </div>
+          
+          <div class="description-section">
+            <h4>Description</h4>
+            <p>{{ selectedCertification?.description }}</p>
+          </div>
+          
+          <div class="skills-section" *ngIf="selectedCertification?.skills">
+            <h4>Skills Validated</h4>
+            <div class="skills-tags">
+              <span class="skill-tag" *ngFor="let skill of selectedCertification?.skills">
+                {{ skill }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn primary" (click)="closeCertModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Education Modal -->
+  <div class="modal-overlay" *ngIf="isEduModalOpen" (click)="closeEduModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ selectedEducation?.degree }}</h3>
+        <button class="modal-close" (click)="closeEduModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="education-image" *ngIf="selectedEducation?.image">
+          <img [src]="selectedEducation?.image" [alt]="selectedEducation?.institution" />
+        </div>
+        
+        <div class="education-details">
+          <div class="detail-item">
+            <strong>Institution:</strong> {{ selectedEducation?.institution }}
+          </div>
+          <div class="detail-item">
+            <strong>Period:</strong> {{ selectedEducation?.period }}
+          </div>
+          
+          <div class="description-section">
+            <h4>Description</h4>
+            <p>{{ selectedEducation?.description }}</p>
+          </div>
+          
+          <div class="achievements-section" *ngIf="selectedEducation?.achievements">
+            <h4>Key Achievements</h4>
+            <ul class="achievements-list">
+              <li class="achievement-item" *ngFor="let achievement of selectedEducation?.achievements">
+                <i class="fas fa-trophy"></i>
+                {{ achievement }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn primary" (click)="closeEduModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

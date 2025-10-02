@@ -1,0 +1,129 @@
+/* Theme Toggle Component Styles */
+.theme-toggle-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: var(--bg-secondary);
+  border-radius: 13px;
+  padding: 2px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+[data-theme="light"] .theme-toggle-thumb {
+  transform: translateX(24px);
+}
+
+.theme-icons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  z-index: 1;
+}
+
+.theme-icons i {
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.theme-icons .fa-moon {
+  color: var(--accent-cyan);
+}
+
+.theme-icons .fa-sun {
+  color: var(--accent-pink);
+}
+
+[data-theme="light"] .fa-moon {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+[data-theme="light"] .fa-sun {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+[data-theme="dark"] .fa-moon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+[data-theme="dark"] .fa-sun {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.theme-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .theme-toggle-container {
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .theme-label {
+    display: none;
+  }
+  
+  .theme-toggle-btn {
+    padding: 0.4rem;
+  }
+}
+
+/* Animation for theme transition */
+.theme-toggle-thumb {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states for accessibility */
+.theme-toggle-btn:focus {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}

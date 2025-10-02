@@ -1,0 +1,191 @@
+<div class="messages-admin-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Sidebar -->
+  <div class="messages-admin-sidebar">
+    <div class="messages-sidebar-header">
+      <div class="messages-admin-logo">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+    </div>
+
+    <div class="messages-sidebar-nav">
+      <button class="messages-nav-item" routerLink="/admin">
+        <i class="fas fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="messages-nav-item" routerLink="/admin/projects">
+        <i class="fas fa-briefcase"></i>
+        <span>Projects</span>
+      </button>
+      <button class="messages-nav-item active">
+        <i class="fas fa-envelope"></i>
+        <span>Messages</span>
+        <span class="messages-nav-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      </button>
+      <button class="messages-nav-item" routerLink="/admin/users">
+        <i class="fas fa-users"></i>
+        <span>Users</span>
+      </button>
+    </div>
+
+    <div class="messages-sidebar-footer">
+      <button class="messages-logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="messages-admin-main">
+    <!-- Header -->
+    <div class="messages-header">
+      <div class="messages-header-content">
+        <h1>Message Center</h1>
+        <p>Manage and respond to visitor messages</p>
+      </div>
+      <div class="messages-header-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ totalCount }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-item unread">
+          <span class="stat-number">{{ unreadCount }}</span>
+          <span class="stat-label">Unread</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="messages-filter-bar">
+      <div class="filter-group">
+        <div class="filter-tabs">
+          <button class="filter-tab active" (click)="filterMessages('all')">
+            All Messages
+          </button>
+          <button class="filter-tab" (click)="filterMessages('unread')">
+            Unread
+            <span class="tab-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+          </button>
+          <button class="filter-tab" (click)="filterMessages('read')">
+            Read
+          </button>
+        </div>
+      </div>
+
+      <div class="search-group">
+        <div class="search-input">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search messages..." (input)="searchMessages($event)">
+        </div>
+        <select class="sort-select" (change)="sortMessages($event)">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Messages List -->
+    <div class="messages-content">
+      <!-- Loading State -->
+      <div class="messages-loading" *ngIf="isLoading">
+        <div class="loading-spinner"></div>
+        <p>Loading messages...</p>
+      </div>
+
+      <!-- Messages Grid -->
+      <div class="messages-grid" *ngIf="!isLoading && filteredMessages.length > 0">
+        <div class="message-card" *ngFor="let message of filteredMessages" 
+             [class.unread]="!message.isRead" [class.selected]="selectedMessage === message._id">
+          <div class="message-card-header">
+            <div class="sender-avatar">
+              {{ message.name.charAt(0).toUpperCase() }}
+            </div>
+            <div class="sender-info">
+              <h4 class="sender-name">{{ message.name }}</h4>
+              <span class="sender-email">{{ message.email }}</span>
+            </div>
+            <div class="message-meta">
+              <span class="message-time">{{ message.createdAt | date:'MMM d, y • h:mm a' }}</span>
+              <span class="message-status" [class.unread]="!message.isRead">
+                {{ message.isRead ? 'Read' : 'New' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="message-card-body">
+            <h3 class="message-subject">{{ message.subject }}</h3>
+            <p class="message-preview">{{ getMessagePreview(message.message) }}</p>
+          </div>
+
+          <div class="message-card-footer">
+            <div class="message-actions">
+              <button class="action-btn reply-btn" (click)="toggleReplyForm(message._id)">
+                <i class="fas fa-reply"></i>
+                Reply
+              </button>
+              <button class="action-btn read-btn" *ngIf="!message.isRead" (click)="markAsRead(message._id)">
+                <i class="fas fa-check"></i>
+                Mark Read
+              </button>
+              <button class="action-btn delete-btn" (click)="deleteMessage(message._id)">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+            <button class="view-details-btn" (click)="viewMessageDetails(message)">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+
+          <!-- Message Details Expandable Section -->
+          <div class="message-details" *ngIf="selectedMessage === message._id">
+            <div class="details-content">
+              <div class="message-full">
+                <h4>Full Message:</h4>
+                <p>{{ message.message }}</p>
+              </div>
+              
+              <div class="quick-reply" *ngIf="showReplyForm === message._id">
+                <h4>Quick Reply:</h4>
+                <textarea [(ngModel)]="replyMessage" placeholder="Type your response here..." rows="3"></textarea>
+                <div class="reply-actions">
+                  <button class="send-btn" (click)="sendReply(message)">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Response
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="messages-empty" *ngIf="!isLoading && filteredMessages.length === 0">
+        <div class="empty-icon">
+          <i class="fas fa-envelope-open"></i>
+        </div>
+        <h3>No Messages Found</h3>
+        <p *ngIf="currentFilter === 'all'">No messages have been received yet.</p>
+        <p *ngIf="currentFilter === 'unread'">No unread messages. Great job!</p>
+        <p *ngIf="currentFilter === 'read'">No read messages yet.</p>
+        <p *ngIf="searchQuery">No messages found for "{{ searchQuery }}"</p>
+      </div>
+
+      <!-- Pagination -->
+      <div class="messages-pagination" *ngIf="!isLoading && filteredMessages.length > 0">
+        <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+          <i class="fas fa-chevron-left"></i>
+          Previous
+        </button>
+        <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          Next
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

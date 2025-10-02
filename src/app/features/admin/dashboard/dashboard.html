@@ -1,0 +1,184 @@
+<div class="admin-container">
+  <!-- Sidebar -->
+  <div class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="admin-logo">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <button class="nav-item active" (click)="switchTab('dashboard')">
+        <i class="fas fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" routerLink="/admin/projects">
+        <i class="fas fa-briefcase"></i>
+        <span>Projects</span>
+      </button>
+      <button class="nav-item" routerLink="/admin/messages">
+        <i class="fas fa-envelope"></i>
+        <span>Messages</span>
+        <span class="badge">3</span>
+      </button>
+      <button class="nav-item" routerLink="/admin/users">
+        <i class="fas fa-users"></i>
+        <span>Users</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="admin-main">
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p>Loading dashboard...</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!isLoading" class="dashboard-content">
+      <div class="dashboard-header">
+        <div class="header-content">
+          <h1>Admin Dashboard</h1>
+          <p>Welcome to Abdallah Administration Panel</p>
+        </div>
+        <div class="header-stats">
+          <div class="stat-badge">
+            <i class="fas fa-chart-line"></i>
+            <span>Performance</span>
+          </div>
+          <div class="stat-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure</span>
+          </div>
+          <div class="stat-badge">
+            <i class="fas fa-bolt"></i>
+            <span>Fast</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions - Main Content -->
+      <div class="quick-actions-main">
+        <div class="section-header">
+          <h2>Quick Actions</h2>
+          <p>Manage your content and settings efficiently</p>
+        </div>
+
+        <div class="actions-grid-main">
+          <div class="action-card" routerLink="/admin/projects">
+            <div class="action-icon">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="action-content">
+              <h3>Add Project</h3>
+              <p>Create and publish new projects</p>
+            </div>
+            <div class="action-arrow">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="action-card" routerLink="/admin/content/home">
+            <div class="action-icon">
+              <i class="fas fa-edit"></i>
+            </div>
+            <div class="action-content">
+              <h3>Edit Home Content</h3>
+              <p>Update homepage sections and content</p>
+            </div>
+            <div class="action-arrow">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="action-card" routerLink="/admin/messages">
+            <div class="action-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="action-content">
+              <h3>View Messages</h3>
+              <p>Check and respond to user inquiries</p>
+            </div>
+            <div class="action-arrow">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+
+          <div class="action-card" routerLink="/admin/users">
+            <div class="action-icon">
+              <i class="fas fa-user-cog"></i>
+            </div>
+            <div class="action-content">
+              <h3>Manage Users</h3>
+              <p>View and manage user accounts</p>
+            </div>
+            <div class="action-arrow">
+              <i class="fas fa-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Cards -->
+      <div class="status-section">
+        <div class="status-grid">
+          <div class="status-card">
+            <div class="status-icon online">
+              <i class="fas fa-server"></i>
+            </div>
+            <div class="status-content">
+              <h3>System Status</h3>
+              <p>All systems operational</p>
+            </div>
+            <div class="status-indicator online"></div>
+          </div>
+
+          <div class="status-card">
+            <div class="status-icon secure">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="status-content">
+              <h3>Security</h3>
+              <p>Protected and secure</p>
+            </div>
+            <div class="status-indicator secure"></div>
+          </div>
+
+          <div class="status-card">
+            <div class="status-icon performance">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <div class="status-content">
+              <h3>Performance</h3>
+              <p>Running optimally</p>
+            </div>
+            <div class="status-indicator performance"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="error-state" *ngIf="!isLoading && !stats">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Failed to load data</h3>
+      <p>Unable to load dashboard information</p>
+      <button class="btn btn-primary" (click)="loadDashboardData()">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,314 @@
+<div class="users-admin-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Sidebar -->
+  <div class="users-admin-sidebar">
+    <div class="users-sidebar-header">
+      <div class="users-admin-logo">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+    </div>
+
+    <div class="users-sidebar-nav">
+      <button class="users-nav-item" routerLink="/admin">
+        <i class="fas fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="users-nav-item" routerLink="/admin/projects">
+        <i class="fas fa-briefcase"></i>
+        <span>Projects</span>
+      </button>
+      <button class="users-nav-item" routerLink="/admin/messages">
+        <i class="fas fa-envelope"></i>
+        <span>Messages</span>
+      </button>
+      <button class="users-nav-item active">
+        <i class="fas fa-users"></i>
+        <span>Users</span>
+        <span class="users-nav-badge" *ngIf="pendingActions > 0">{{ pendingActions }}</span>
+      </button>
+    </div>
+
+    <div class="users-sidebar-footer">
+      <button class="users-logout-btn" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="users-admin-main">
+    <!-- Header -->
+    <div class="users-header">
+      <div class="users-header-content">
+        <h1>User Management</h1>
+        <p>Manage system users and permissions</p>
+      </div>
+      <button class="users-invite-btn" (click)="openInviteDialog()">
+        <i class="fas fa-user-plus"></i>
+        Invite User
+      </button>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="users-stats-overview">
+      <div class="users-stat-card">
+        <div class="users-stat-icon total">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="users-stat-info">
+          <h3>{{ totalUsers }}</h3>
+          <span>Total Users</span>
+        </div>
+      </div>
+      <div class="users-stat-card">
+        <div class="users-stat-icon admins">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="users-stat-info">
+          <h3>{{ adminCount }}</h3>
+          <span>Administrators</span>
+        </div>
+      </div>
+      <div class="users-stat-card">
+        <div class="users-stat-icon active">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="users-stat-info">
+          <h3>{{ activeUsers }}</h3>
+          <span>Active Users</span>
+        </div>
+      </div>
+      <div class="users-stat-card">
+        <div class="users-stat-icon inactive">
+          <i class="fas fa-user-clock"></i>
+        </div>
+        <div class="users-stat-info">
+          <h3>{{ inactiveUsers }}</h3>
+          <span>Inactive</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter and Search Bar -->
+    <div class="users-filter-bar">
+      <div class="users-filter-group">
+        <div class="users-filter-tabs">
+          <button class="users-filter-tab active" (click)="filterUsers('all')">
+            All Users
+          </button>
+          <button class="users-filter-tab" (click)="filterUsers('admins')">
+            Admins Only
+          </button>
+          <button class="users-filter-tab" (click)="filterUsers('active')">
+            Active
+          </button>
+          <button class="users-filter-tab" (click)="filterUsers('inactive')">
+            Inactive
+          </button>
+        </div>
+      </div>
+
+      <div class="users-search-group">
+        <div class="users-search-input">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search users..." (input)="searchUsers($event)">
+        </div>
+        <button class="users-filter-btn" (click)="toggleAdvancedFilters()">
+          <i class="fas fa-filter"></i>
+          Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Advanced Filters -->
+    <div class="users-advanced-filters" *ngIf="showAdvancedFilters">
+      <div class="filter-row">
+        <div class="filter-item">
+          <label>Role</label>
+          <select [(ngModel)]="roleFilter">
+            <option value="">All Roles</option>
+            <option value="admin">Administrator</option>
+            <option value="user">Regular User</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Status</label>
+          <select [(ngModel)]="statusFilter">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Sort By</label>
+          <select [(ngModel)]="sortBy">
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="createdAt">Join Date</option>
+            <option value="lastActive">Last Active</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <label>Order</label>
+          <select [(ngModel)]="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="apply-filters-btn" (click)="applyFilters()">
+          Apply Filters
+        </button>
+        <button class="reset-filters-btn" (click)="resetFilters()">
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="users-table-container">
+      <!-- Loading State -->
+      <div class="users-loading" *ngIf="isLoading">
+        <div class="users-loading-spinner"></div>
+        <p>Loading users...</p>
+      </div>
+
+      <!-- Users Table -->
+      <div class="users-table" *ngIf="!isLoading && filteredUsers.length > 0">
+        <div class="users-table-header">
+          <div class="users-table-col user">User</div>
+          <div class="users-table-col email">Email</div>
+          <div class="users-table-col role">Role</div>
+          <div class="users-table-col status">Status</div>
+          <div class="users-table-col joined">Joined</div>
+          <div class="users-table-col actions">Actions</div>
+        </div>
+
+        <div class="users-table-body">
+          <div class="users-table-row" *ngFor="let user of filteredUsers" 
+               [class.selected]="selectedUser === user._id">
+            <div class="users-table-col user">
+              <div class="user-avatar">
+                {{ user.name.charAt(0).toUpperCase() }}
+              </div>
+              <div class="user-info">
+                <h4 class="user-name">{{ user.name }}</h4>
+                <span class="user-id">ID: {{ user._id | slice:0:8 }}...</span>
+              </div>
+            </div>
+            
+            <div class="users-table-col email">
+              <span class="user-email">{{ user.email }}</span>
+            </div>
+
+            <div class="users-table-col role">
+              <span class="user-role-badge" [class.admin]="user.role === 'admin'">
+                {{ user.role }}
+              </span>
+            </div>
+
+            <div class="users-table-col status">
+              <span class="user-status-badge" [class.active]="user.isActive">
+                {{ user.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+
+            <div class="users-table-col joined">
+              <span class="join-date">{{ user.createdAt | date:'MMM d, y' }}</span>
+            </div>
+
+            <div class="users-table-col actions">
+              <div class="user-actions">
+                <button class="user-action-btn view" (click)="viewUserDetails(user)" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="user-action-btn edit" (click)="editUser(user)" title="Edit User">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="user-action-btn role" 
+                        [class.promote]="user.role === 'user'" 
+                        [class.demote]="user.role === 'admin'"
+                        (click)="toggleUserRole(user)"
+                        title="{{ user.role === 'user' ? 'Promote to Admin' : 'Demote to User' }}">
+                  <i class="fas" [class.fa-user-shield]="user.role === 'user'" 
+                     [class.fa-user]="user.role === 'admin'"></i>
+                </button>
+                <button class="user-action-btn status" 
+                        [class.activate]="!user.isActive" 
+                        [class.deactivate]="user.isActive"
+                        (click)="toggleUserStatus(user)"
+                        title="{{ user.isActive ? 'Deactivate' : 'Activate' }}">
+                  <i class="fas" [class.fa-user-check]="!user.isActive" 
+                     [class.fa-user-slash]="user.isActive"></i>
+                </button>
+                <button class="user-action-btn delete" (click)="deleteUser(user)" title="Delete User">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="users-empty" *ngIf="!isLoading && filteredUsers.length === 0">
+        <div class="users-empty-icon">
+          <i class="fas fa-user-slash"></i>
+        </div>
+        <h3>No Users Found</h3>
+        <p *ngIf="currentFilter === 'all'">No users found in the system.</p>
+        <p *ngIf="currentFilter === 'admins'">No administrators found.</p>
+        <p *ngIf="currentFilter === 'active'">No active users found.</p>
+        <p *ngIf="currentFilter === 'inactive'">No inactive users found.</p>
+        <p *ngIf="searchQuery">No users found for "{{ searchQuery }}"</p>
+        <button class="users-invite-first-btn" (click)="openInviteDialog()">
+          <i class="fas fa-user-plus"></i>
+          Invite First User
+        </button>
+      </div>
+
+      <!-- Pagination -->
+      <div class="users-pagination" *ngIf="!isLoading && filteredUsers.length > 0">
+        <div class="pagination-info">
+          Showing {{ startIndex + 1 }}-{{ endIndex }} of {{ filteredUsers.length }} users
+        </div>
+        <div class="pagination-controls">
+          <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="pagination-page">Page {{ currentPage }} of {{ totalPages }}</span>
+          <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="pagination-size">
+          <label>Show:</label>
+          <select [(ngModel)]="pageSize" (change)="changePageSize()">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div class="user-detail-modal" *ngIf="selectedUserDetail">
+      <div class="modal-overlay" (click)="closeUserDetails()"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>User Details</h2>
+          <button class="modal-close" (click)="closeUserDetails()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- User details content here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

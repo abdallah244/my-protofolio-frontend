@@ -1,0 +1,275 @@
+<div class="home-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Loading Overlay -->
+  <div class="home-loading" *ngIf="isLoading">
+    <div class="home-loader">
+      <div class="loader-orbit">
+        <div class="loader-electron"></div>
+      </div>
+      <div class="loader-text">Loading protofolio Content...</div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" [class.scrolled]="isNavbarScrolled">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+
+      <div class="nav-menu">
+        <a 
+          *ngFor="let item of navItems" 
+          class="nav-link" 
+          [class.active]="activeSection === item.id"
+          (click)="scrollToSection(item.id)"
+        >
+          <i [class]="item.icon"></i>
+          {{ item.label }}
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <app-theme-toggle></app-theme-toggle>
+        <div class="user-menu" *ngIf="user">
+          <button class="user-btn">
+            <i class="fas fa-user"></i>
+            {{ user.name }}
+          </button>
+          <div class="user-dropdown">
+            <a class="dropdown-item" (click)="logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
+          </div>
+        </div>
+        <a *ngIf="!user" routerLink="/login" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-background">
+      <div class="hero-particles">
+        <div class="particle" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]"></div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">{{ hasContent() ? homeContent?.sections?.hero?.badgeText : 'Developer' }}</div>
+      <h1 class="hero-title">
+        {{ hasContent() ? homeContent?.sections?.hero?.title : 'Loading...' }}
+      </h1>
+      <p class="hero-description">
+        {{ hasContent() ? homeContent?.sections?.hero?.description : 'Content is being loaded...' }}
+      </p>
+      
+      <div class="hero-actions">
+        <button class="btn btn-primary" (click)="scrollToSection('projects')">
+          <i class="fas fa-rocket"></i>
+          View Work
+        </button>
+        <button class="btn btn-secondary" (click)="navigateTo('/contact')">
+          <i class="fas fa-paper-plane"></i>
+          Get In Touch
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="floating-card" *ngFor="let card of [1,2,3]">
+        <div class="card-content">
+          <i class="fas fa-code" *ngIf="card === 1"></i>
+          <i class="fas fa-bolt" *ngIf="card === 2"></i>
+          <i class="fas fa-mobile" *ngIf="card === 3"></i>
+          <h3>{{ card === 1 ? 'Clean Code' : card === 2 ? 'Fast & Reliable' : 'Responsive' }}</h3>
+          <p>{{ card === 1 ? 'Modern & maintainable' : card === 2 ? 'High performance' : 'All devices' }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section" *ngIf="hasContent()">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-project-diagram"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ homeContent?.sections?.stats?.projects }}+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ homeContent?.sections?.stats?.clients }}+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-code"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ homeContent?.sections?.stats?.technologies }}+</div>
+          <div class="stat-label">Technologies Used</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ homeContent?.sections?.stats?.experience }}+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <div class="section-header">
+      <h2>Featured Projects</h2>
+      <p>Showcase of my latest work and innovations</p>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card" *ngFor="let project of featuredProjects">
+        <div class="project-image">
+          <img [src]="getPrimaryImage(project)" [alt]="project.title">
+          <div class="project-overlay">
+            <button class="project-btn" (click)="openProjectUrl(project.liveUrl)" *ngIf="project.liveUrl">
+              <i class="fas fa-eye"></i>
+              Live Demo
+            </button>
+            <button class="project-btn" (click)="openProjectUrl(project.githubUrl)" *ngIf="project.githubUrl">
+              <i class="fab fa-github"></i>
+              Code
+            </button>
+          </div>
+        </div>
+        <div class="project-content">
+          <div class="project-status">
+            <span class="status-badge" [class.published]="project.status === 'published'">
+              {{ project.status === 'published' ? 'Published' : 'Draft' }}
+            </span>
+          </div>
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.shortDescription || project.description }}</p>
+          <div class="project-tech">
+            <span class="tech-tag" *ngFor="let tech of project.technologies">
+              {{ tech }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-actions">
+      <button class="btn btn-primary" (click)="navigateTo('/projects')">
+        <i class="fas fa-briefcase"></i>
+        View All Projects
+      </button>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section" *ngIf="hasContent()">
+    <div class="section-header">
+      <h2>{{ homeContent?.sections?.about?.title }}</h2>
+      <p>Get to know more about my skills and experience</p>
+    </div>
+
+    <div class="about-content">
+      <div class="about-text">
+        <p>
+          {{ homeContent?.sections?.about?.description }}
+        </p>
+        <div class="skills-grid">
+          <div class="skill-item" *ngFor="let skill of skills">
+            <i [class]="skill.icon"></i>
+            <span>{{ skill.name }}</span>
+            <div class="skill-level">
+              <div class="level-bar">
+                <div class="level-fill" [style.width.%]="skill.level"></div>
+              </div>
+              <span class="level-percentage">{{ skill.level }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="code-animation">
+          <div class="code-line"></div>
+          <div class="code-line"></div>
+          <div class="code-line"></div>
+          <div class="code-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-actions">
+      <button class="btn btn-secondary" (click)="navigateTo('/about')">
+        <i class="fas fa-user"></i>
+        Learn More About Me
+      </button>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section" *ngIf="hasContent()">
+    <div class="section-header">
+      <h2>{{ homeContent?.sections?.contact?.title }}</h2>
+      <p>{{ homeContent?.sections?.contact?.description }}</p>
+    </div>
+    
+    <div class="contact-content">
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>{{ homeContent?.sections?.contact?.email }}</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <span>{{ homeContent?.sections?.contact?.phone }}</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ homeContent?.sections?.contact?.location }}</span>
+        </div>
+      </div>
+      
+      <div class="contact-actions">
+        <button class="btn btn-primary" (click)="navigateTo('/contact')">
+          <i class="fas fa-paper-plane"></i>
+          Send Message
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-atom"></i>
+        <span>My protofolio</span>
+      </div>
+      <p>&copy; 2025 Abdallah Hany. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+</div>

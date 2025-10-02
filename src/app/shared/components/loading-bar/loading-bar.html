@@ -1,0 +1,10 @@
+<div class="loading-bar-container" *ngIf="isVisible">
+  <div class="loading-bar">
+    <div class="progress-track" [style.width.%]="progress"></div>
+    <div class="progress-glow"></div>
+  </div>
+  <div class="loading-info">
+    <span class="progress-text">{{ progress }}%</span>
+    <span class="loading-status">Loading protofolio modules...</span>
+  </div>
+</div>

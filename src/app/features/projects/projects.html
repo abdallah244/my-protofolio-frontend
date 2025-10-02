@@ -1,0 +1,137 @@
+<div class="projects-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo" routerLink="/home">
+        <i class="fas fa-atom"></i>
+        <span>Abdallah Hany</span>
+      </div>
+
+      <div class="nav-actions">
+        <app-theme-toggle></app-theme-toggle>
+        <a routerLink="/home" class="home-btn">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="projects-content">
+    <!-- Header -->
+    <div class="projects-header">
+      <h1 class="projects-title">My Portfolio Projects</h1>
+      <p class="projects-subtitle">Showcase of my work and technical expertise</p>
+      
+      <!-- Projects Stats -->
+      <div class="projects-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ getAllProjectsCount() }}</span>
+          <span class="stat-label">Total Projects</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getFilteredProjectsCount() }}</span>
+          <span class="stat-label">Showing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Enhanced Filters -->
+    <div class="projects-filters">
+      <div class="filter-cards">
+        <div 
+          class="filter-card" 
+          *ngFor="let filter of filters"
+          [class.active]="activeFilter === filter.id"
+          (click)="applyFilter(filter.id)"
+        >
+          <div class="filter-icon">
+            <i [class]="filter.icon"></i>
+          </div>
+          <div class="filter-content">
+            <h3>{{ filter.label }}</h3>
+            <span class="project-count">
+              {{ getFilterCount(filter.id) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid" *ngIf="filteredProjects.length > 0">
+      <div class="project-card" *ngFor="let project of filteredProjects" [class.featured]="project.featured">
+        <div class="project-image">
+          <img [src]="getPrimaryImage(project)" [alt]="project.title">
+          <div class="project-overlay">
+            <button class="project-action-btn" (click)="openUrl(project.liveUrl)" *ngIf="project.liveUrl">
+              <i class="fas fa-external-link-alt"></i>
+              Live Demo
+            </button>
+            <button class="project-action-btn" (click)="openUrl(project.githubUrl)" *ngIf="project.githubUrl">
+              <i class="fab fa-github"></i>
+              Code
+            </button>
+          </div>
+        </div>
+        
+        <div class="project-content">
+          <div class="project-status">
+            <span class="featured-badge" *ngIf="project.featured">
+              <i class="fas fa-star"></i>
+              Featured
+            </span>
+            <span class="type-badge" *ngIf="isFullStackProject(project)">
+              <i class="fas fa-layer-group"></i>
+              Full Stack
+            </span>
+          </div>
+          
+          <h3 class="project-title">{{ project.title }}</h3>
+          <p class="project-description">{{ project.shortDescription || project.description }}</p>
+          
+          <div class="project-tech">
+            <span 
+              class="tech-tag" 
+              *ngFor="let tech of project.technologies"
+              [style.background]="getTechColor(tech)"
+            >
+              <i [class]="getTechIcon(tech)"></i>
+              {{ tech }}
+            </span>
+          </div>
+
+          <div class="project-links" *ngIf="project.liveUrl || project.githubUrl">
+            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" class="project-link">
+              <i class="fas fa-external-link-alt"></i>
+              Live Demo
+            </a>
+            <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank" class="project-link">
+              <i class="fab fa-github"></i>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredProjects.length === 0 && !isLoading">
+      <i class="fas fa-folder-open"></i>
+      <h3>No projects found</h3>
+      <p>Try selecting a different category or check back later for new projects</p>
+      <button class="refresh-btn" (click)="refreshProjects()">
+        <i class="fas fa-redo"></i>
+        Refresh Projects
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading projects...</p>
+    </div>
+  </div>
+</div>

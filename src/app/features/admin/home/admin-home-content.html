@@ -1,0 +1,519 @@
+<div class="admin-content-container">
+  <div class="admin-header">
+    <h1>Home Page Content Management</h1>
+    <p>Edit the texts and content displayed on the home page</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading content...</p>
+  </div>
+
+  <!-- Content Form -->
+  <form [formGroup]="homeForm" (ngSubmit)="onSubmitHome()" *ngIf="!isLoading">
+    <!-- Hero Section -->
+    <div class="form-section">
+      <h2>Hero Section</h2>
+      <div class="form-group">
+        <label>Main Title</label>
+        <input type="text" formControlName="heroTitle" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('heroTitle')?.touched && homeForm.get('heroTitle')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Subtitle</label>
+        <input type="text" formControlName="heroSubtitle" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('heroSubtitle')?.touched && homeForm.get('heroSubtitle')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea formControlName="heroDescription" class="form-textarea" rows="3"></textarea>
+        <div
+          class="error-message"
+          *ngIf="
+            homeForm.get('heroDescription')?.touched && homeForm.get('heroDescription')?.invalid
+          "
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Badge</label>
+        <input type="text" formControlName="heroBadge" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('heroBadge')?.touched && homeForm.get('heroBadge')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="form-section">
+      <h2>Statistics</h2>
+      <div class="stats-grid">
+        <div class="form-group">
+          <label>Projects Count</label>
+          <input type="number" formControlName="statsProjects" class="form-input" min="0" />
+          <div
+            class="error-message"
+            *ngIf="homeForm.get('statsProjects')?.touched && homeForm.get('statsProjects')?.invalid"
+          >
+            This field is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Clients Count</label>
+          <input type="number" formControlName="statsClients" class="form-input" min="0" />
+          <div
+            class="error-message"
+            *ngIf="homeForm.get('statsClients')?.touched && homeForm.get('statsClients')?.invalid"
+          >
+            This field is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Technologies Count</label>
+          <input type="number" formControlName="statsTechnologies" class="form-input" min="0" />
+          <div
+            class="error-message"
+            *ngIf="
+              homeForm.get('statsTechnologies')?.touched &&
+              homeForm.get('statsTechnologies')?.invalid
+            "
+          >
+            This field is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Years of Experience</label>
+          <input type="number" formControlName="statsExperience" class="form-input" min="0" />
+          <div
+            class="error-message"
+            *ngIf="
+              homeForm.get('statsExperience')?.touched && homeForm.get('statsExperience')?.invalid
+            "
+          >
+            This field is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="form-section">
+      <h2>About Section</h2>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" formControlName="aboutTitle" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('aboutTitle')?.touched && homeForm.get('aboutTitle')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea formControlName="aboutDescription" class="form-textarea" rows="4"></textarea>
+        <div
+          class="error-message"
+          *ngIf="
+            homeForm.get('aboutDescription')?.touched && homeForm.get('aboutDescription')?.invalid
+          "
+        >
+          This field is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="form-section">
+      <h2>Contact Information</h2>
+      <div class="form-group">
+        <label>Contact Section Title</label>
+        <input type="text" formControlName="contactTitle" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('contactTitle')?.touched && homeForm.get('contactTitle')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contact Section Description</label>
+        <textarea formControlName="contactDescription" class="form-textarea" rows="2"></textarea>
+        <div
+          class="error-message"
+          *ngIf="
+            homeForm.get('contactDescription')?.touched &&
+            homeForm.get('contactDescription')?.invalid
+          "
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="contactEmail" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('contactEmail')?.touched && homeForm.get('contactEmail')?.invalid"
+        >
+          A valid email is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" formControlName="contactPhone" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="homeForm.get('contactPhone')?.touched && homeForm.get('contactPhone')?.invalid"
+        >
+          This field is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" formControlName="contactLocation" class="form-input" />
+        <div
+          class="error-message"
+          *ngIf="
+            homeForm.get('contactLocation')?.touched && homeForm.get('contactLocation')?.invalid
+          "
+        >
+          This field is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Management Section -->
+    <div class="form-section" *ngIf="!isLoading">
+      <h2>Skills Management</h2>
+
+      <form [formGroup]="skillsForm" (ngSubmit)="onSaveSkills()">
+        <div formArrayName="skills">
+          <div
+            class="skill-item"
+            *ngFor="let skill of skillsArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="skill-form-grid">
+              <div class="form-group">
+                <label>Skill Name</label>
+                <input type="text" formControlName="name" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label>Icon (Font Awesome class)</label>
+                <input
+                  type="text"
+                  formControlName="icon"
+                  class="form-input"
+                  placeholder="fab fa-angular"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Level (0-100)</label>
+                <input type="number" formControlName="level" class="form-input" min="0" max="100" />
+              </div>
+
+              <div class="form-group">
+                <label>Category</label>
+                <select formControlName="category" class="form-input">
+                  <option value="frontend">Frontend</option>
+                  <option value="backend">Backend</option>
+                  <option value="database">Database</option>
+                  <option value="language">Language</option>
+                  <option value="tool">Tool</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Active</label>
+                <input type="checkbox" formControlName="isActive" />
+              </div>
+
+              <div class="form-group">
+                <button type="button" class="btn btn-danger" (click)="removeSkill(i)">
+                  <i class="fas fa-trash"></i>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="addNewSkill()">
+            <i class="fas fa-plus"></i>
+            Add New Skill
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="skillsForm.invalid || isSaving">
+            <span *ngIf="!isSaving">Save Skills</span>
+            <span *ngIf="isSaving">Saving...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Featured Projects Section -->
+    <div class="form-section">
+      <h2>Featured Projects on Home Page</h2>
+      <p style="color: #fff; margin-bottom: 2vh;">Select the projects you want to display in the projects section on the home page (max: 6 projects)</p>
+
+      <form [formGroup]="featuredProjectsForm" style="color: #fff;" (ngSubmit)="onSaveFeaturedProjects()">
+        <div formArrayName="featuredProjects">
+          <div
+            class="featured-project-item"
+            *ngFor="let project of featuredProjectsArray.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="project-selector">
+              <label>Project {{ i + 1 }}</label>
+              <select formControlName="projectId" class="form-input">
+                <option value="">-- Select Project --</option>
+                <option *ngFor="let project of allProjects" [value]="project._id">
+                  {{ project.title }} ({{ project.status }})
+                </option>
+              </select>
+            </div>
+
+            <div class="project-preview" *ngIf="getSelectedProject(i) as selectedProject">
+              <div class="preview-content">
+                <h4>{{ selectedProject.title }}</h4>
+                <p>
+                  {{
+                    selectedProject.shortDescription || selectedProject.description
+                      | slice : 0 : 100
+                  }}...
+                </p>
+                <div class="tech-tags">
+                  <span
+                    class="tech-tag"
+                    *ngFor="let tech of selectedProject.technologies.slice(0, 3)"
+                  >
+                    {{ tech }}
+                  </span>
+                  <span *ngIf="selectedProject.technologies.length > 3" class="tech-tag-more">
+                    +{{ selectedProject.technologies.length - 3 }}
+                  </span>
+                </div>
+                <div class="project-actions">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteProject(selectedProject._id!)"
+                  >
+                    <i class="fas fa-trash"></i>
+                    Delete Project
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+            <span *ngIf="!isSaving">Save Featured Projects</span>
+            <span *ngIf="isSaving">Saving...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="previewChanges()">
+        Preview Changes
+      </button>
+      <button type="button" class="btn btn-success" (click)="openAddProjectModal()">
+        <i class="fas fa-plus"></i>
+        Add New Project
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="homeForm.invalid || isSaving">
+        <span *ngIf="!isSaving">Save Changes</span>
+        <span *ngIf="isSaving">Saving...</span>
+      </button>
+    </div>
+
+    <!-- Save Message -->
+    <div class="save-message" *ngIf="saveMessage" [class.success]="!saveMessage.includes('Error')">
+      {{ saveMessage }}
+    </div>
+  </form>
+
+  <!-- Add Project Modal -->
+  <div class="modal-overlay" *ngIf="showAddProjectModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Project</h2>
+        <button class="modal-close" (click)="closeAddProjectModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmitProject()">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Project Name *</label>
+              <input
+                type="text"
+                formControlName="title"
+                class="form-input"
+                placeholder="Enter project name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Short Description *</label>
+              <textarea
+                formControlName="shortDescription"
+                class="form-input"
+                rows="2"
+                placeholder="Short description of the project (will appear on the card)"
+              ></textarea>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Full Description *</label>
+              <textarea
+                formControlName="description"
+                class="form-input"
+                rows="4"
+                placeholder="Full description of the project"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Live Demo URL</label>
+              <input
+                type="url"
+                formControlName="liveUrl"
+                class="form-input"
+                placeholder="https://example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>GitHub URL</label>
+              <input
+                type="url"
+                formControlName="githubUrl"
+                class="form-input"
+                placeholder="https://github.com/username/repo"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Status</label>
+              <select formControlName="status" class="form-input">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Featured</label>
+              <div class="checkbox-container">
+                <input type="checkbox" formControlName="featured" id="featured" />
+                <label for="featured">Display this project as featured</label>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Technologies Used</label>
+              <div class="technologies-input">
+                <input
+                  type="text"
+                  [(ngModel)]="newTechnology"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-input"
+                  placeholder="Enter a technology and add it"
+                  (keyup.enter)="addTechnology()"
+                />
+                <button type="button" class="btn btn-sm" style="background-color: #fff;" (click)="addTechnology()">
+                  <i class="fas fa-plus" ></i>
+                  Add
+                </button>
+              </div>
+
+              <div class="technologies-list" *ngIf="projectTechnologies.length > 0">
+                <span class="tech-tag" *ngFor="let tech of projectTechnologies; let i = index">
+                  {{ tech }}
+                  <button type="button" class="tag-remove" (click)="removeTechnology(i)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Project Image</label>
+              <div class="image-upload-container">
+                <input
+                  type="file"
+                  #imageInput
+                  accept="image/*"
+                  (change)="onImageSelected($event)"
+                  hidden
+                />
+
+                <div
+                  class="upload-area"
+                  (click)="triggerImageUpload()"
+                  [class.has-image]="projectImagePreview"
+                >
+                  <div *ngIf="isUploadingImage" class="upload-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Uploading image...</p>
+                  </div>
+
+                  <div *ngIf="!isUploadingImage && !projectImagePreview" class="upload-placeholder">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Click to choose a project image</p>
+                    <span>Suggested size: 800x600 pixels</span>
+                  </div>
+
+                  <div *ngIf="!isUploadingImage && projectImagePreview" class="image-preview">
+                    <img [src]="projectImagePreview" alt="Image Preview" />
+                    <button
+                      type="button"
+                      class="btn btn-sm change-image-btn"
+                      (click)="triggerImageUpload()"
+                    >
+                      Change Image
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="projectForm.invalid">
+            Save Project
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="closeAddProjectModal()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

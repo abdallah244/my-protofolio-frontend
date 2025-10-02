@@ -1,0 +1,96 @@
+<div class="login-container" [class.dark]="currentTheme === 'dark'" [class.light]="currentTheme === 'light'">
+  
+  <!-- Loading Overlay -->
+  <div class="login-loading" *ngIf="isLoading">
+    <div class="login-spinner">
+      <i class="fas fa-shield-alt"></i>
+    </div>
+    <div class="login-loading-text">Authenticating...</div>
+    <div class="login-progress">
+      <div class="login-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="login-content" *ngIf="!isLoading">
+    
+    <!-- Background Elements -->
+    <div class="login-background">
+      <div class="login-particle login-particle-1"></div>
+      <div class="login-particle login-particle-2"></div>
+      <div class="login-particle login-particle-3"></div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h1 class="login-title">Secure Login</h1>
+        <p class="login-subtitle">Access your account portal</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label">email</label>
+          <div class="input-group">
+            <i class="fas fa-user input-icon"></i>
+            <input 
+              formControlName="email"
+              type="email" 
+              class="form-input"
+              placeholder="...@gmail.com"
+            >
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">email is required</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email signature</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <i class="fas fa-key input-icon"></i>
+            <input 
+              formControlName="password"
+              type="password" 
+              class="form-input"
+              placeholder="••••••••"
+            >
+          </div>
+          <div class="error-message" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password required</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Key must be 6+ characters</span>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-container" *ngIf="errorMessage">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          [disabled]="loginForm.invalid"
+          class="login-btn"
+        >
+          <i class="fas fa-sign-in-alt"></i>
+          Initiate account Login
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>New to account system? 
+          <a routerLink="/register" class="register-link">Create account ID</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
