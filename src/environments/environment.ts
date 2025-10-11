@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://myprotofoliobackend-production.up.railway.app/api',
+  apiUrl: 'https://myprotofoliobackend-production.up.railway.app/api',
   appName: 'abdallah hany Portfolio',
   version: '1.0.0',
   features: {
