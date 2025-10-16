@@ -118,7 +118,8 @@ I proudly earned my Graduation Certificate from ADA Academy with Distinction, ra
       { name: 'JavaScript', level: 75, icon: 'fab fa-js-square' },
       { name: 'TypeScript', level: 79, icon: 'fas fa-code' },
       { name: 'HTML', level: 91, icon: 'fa-brands fa-html5' },
-      { name: 'CSS', level: 86, icon: 'fa-brands fa-css3-alt' }
+      { name: 'CSS', level: 86, icon: 'fa-brands fa-css3-alt' },
+      { name: 'SCSS', level: 76, icon: 'fa-brands fa-bootstrap' }
       
     ],
     frontend: [
