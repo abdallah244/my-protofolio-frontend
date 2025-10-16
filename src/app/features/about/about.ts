@@ -56,7 +56,7 @@ I proudly earned my Graduation Certificate from ADA Academy with Distinction, ra
   };
 
   stats = [
-    { number: '6+', label: 'Projects Completed', icon: 'fas fa-project-diagram' },
+    { number: '7+', label: 'Projects Completed', icon: 'fas fa-project-diagram' },
     { number: '1+', label: 'Years Experience', icon: 'fas fa-calendar-alt' },
     { number: '0+', label: 'Happy Clients', icon: 'fas fa-smile' },
     { number: '18+', label: 'Technologies Used', icon: 'fas fa-tools' }
